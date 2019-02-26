@@ -24,12 +24,12 @@ public class TeamsPresenter implements TeamsContract.Presenter {
     public void getDataListTeams() {
         view.showProgress();
 
-        Call<ResponseTeams> call = apiInterface.getAllTeams(Constants.S,Constants.C);
+        Call<ResponseTeams> call = apiInterface.getAllTeams(Constants.S, Constants.C);
         call.enqueue(new Callback<ResponseTeams>() {
             @Override
             public void onResponse(Call<ResponseTeams> call, Response<ResponseTeams> response) {
                 view.hideProgress();
-                if (response.body() != null){
+                if (response.body() != null) {
                     view.showDataList(response.body().getTeams());
                 }
             }
@@ -40,5 +40,34 @@ public class TeamsPresenter implements TeamsContract.Presenter {
                 view.showFailureMessage(throwable.getMessage());
             }
         });
+    }
+
+    @Override
+    public void searchTeams(String searchText) {
+        if (!searchText.isEmpty()) {
+            view.showProgress();
+            Call<ResponseTeams> call = apiInterface.getSearchTeams(searchText);
+            call.enqueue(new Callback<ResponseTeams>() {
+                @Override
+                public void onResponse(Call<ResponseTeams> call, Response<ResponseTeams> response) {
+                    view.hideProgress();
+                    if (response.body() != null) {
+                        if (response.body().getTeams() != null) {
+                            view.showDataList(response.body().getTeams());
+                        }else {
+                            view.showFailureMessage("Team tidak ada");
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseTeams> call, Throwable throwable) {
+                    view.hideProgress();
+                    view.showFailureMessage(throwable.getMessage());
+                }
+            });
+        } else {
+            getDataListTeams();
+        }
     }
 }

@@ -10,11 +10,40 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_marginHorizontal="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtSearch"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan nama team"/>
+
+        <ImageButton
+            android:id="@+id/btnSearch"
+            android:background="@android:color/transparent"
+            android:layout_weight="0"
+            android:src="@android:drawable/ic_menu_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Search"/>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_teams"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_team_football"/>
+        tools:listitem="@layout/item_team_football">
+
+
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

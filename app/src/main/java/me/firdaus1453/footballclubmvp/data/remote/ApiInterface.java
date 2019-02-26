@@ -11,4 +11,8 @@ public interface ApiInterface {
             @Query("s") String s,
             @Query("c") String c
     );
+
+//    https://www.thesportsdb.com/api/v1/json/1/searchteams.php?t=Arsenal
+    @GET("searchteams.php")
+    Call<ResponseTeams> getSearchTeams(@Query("t") String t);
 }

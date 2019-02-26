@@ -3,7 +3,6 @@ package me.firdaus1453.footballclubmvp.ui.teams;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,13 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import me.firdaus1453.footballclubmvp.R;
 import me.firdaus1453.footballclubmvp.model.TeamsItem;
@@ -32,6 +32,10 @@ public class TeamsFragment extends Fragment implements TeamsContract.View {
     Unbinder unbinder;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.edtSearch)
+    EditText edtSearch;
+    @BindView(R.id.btnSearch)
+    ImageButton btnSearch;
     private ProgressDialog progressDialog;
     private final TeamsPresenter teamsPresenter = new TeamsPresenter(this);
 
@@ -47,7 +51,6 @@ public class TeamsFragment extends Fragment implements TeamsContract.View {
         View view = inflater.inflate(R.layout.fragment_teams, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-
         teamsPresenter.getDataListTeams();
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -56,8 +59,19 @@ public class TeamsFragment extends Fragment implements TeamsContract.View {
                 teamsPresenter.getDataListTeams();
             }
         });
+        setupUIListener();
         return view;
 
+    }
+
+    private void setupUIListener() {
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String searchText = edtSearch.getText().toString().toLowerCase();
+                teamsPresenter.searchTeams(searchText);
+            }
+        });
     }
 
     @Override
@@ -77,7 +91,7 @@ public class TeamsFragment extends Fragment implements TeamsContract.View {
     @Override
     public void showDataList(List<TeamsItem> teamsItemList) {
         rvTeams.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvTeams.setAdapter(new TeamsAdapter(getContext(),teamsItemList));
+        rvTeams.setAdapter(new TeamsAdapter(getContext(), teamsItemList));
     }
 
     @Override
